@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block title %}Корзина: {{ cart.user.username }} - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .cart-detail-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .form-header {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+    .form-header::before, .form-header::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background-color: #e0e0e0;
+        max-width: 100px;
+    }
+    .cart-detail {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .cart-info {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 15px;
+        font-size: 16px;
+        color: #333;
+    }
+    .cart-info .label {
+        font-weight: bold;
+        color: #555;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .cart-info .value {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .items-section {
+        margin-top: 20px;
+    }
+    .items-section h3 {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #4756DD;
+        padding-bottom: 5px;
+    }
+    .items-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .items-table th, .items-table td {
+        padding: 12px;
+        text-align: left;
+        font-size: 15px;
+    }
+    .items-table th {
+        background-color: #4756DD;
+        color: white;
+        font-weight: bold;
+    }
+    .items-table td {
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #eee;
+    }
+    .items-table tr:last-child td {
+        border-bottom: none;
+    }
+    .items-table tr:hover td {
+        background-color: #f1f1f1;
+        transition: background-color 0.2s ease;
+    }
+    .no-items {
+        text-align: center;
+        color: #7f8c8d;
+        font-style: italic;
+        padding: 20px;
+    }
+    .form-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .form-link {
+        color: #4756DD;
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.2s ease;
+    }
+    .form-link:hover {
+        color: #3b4abb;
+        text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+        .cart-detail-container {
+            margin: 20px 10px;
+            padding: 15px;
+        }
+        .form-header {
+            font-size: 24px;
+        }
+        .cart-info {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .cart-info .label, .cart-info .value {
+            padding: 8px 0;
+        }
+        .items-table th, .items-table td {
+            font-size: 14px;
+            padding: 10px;
+        }
+        .items-table {
+            display: block;
+            overflow-x: auto;
+        }
+        .form-links {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+<div class="cart-detail-container">
+    <h1 class="form-header">
+        🛒 Корзина {{ cart.user.username }}
+    </h1>
+    <div class="cart-detail">
+        <div class="cart-info">
+            <div class="label">Пользователь:</div>
+            <div class="value">{{ cart.user.username }}</div>
+            <div class="label">Дата создания:</div>
+            <div class="value">{{ cart.created_at }}</div>
+            <div class="label">Дата обновления:</div>
+            <div class="value">{{ cart.updated_at }}</div>
+        </div>
+        <div class="items-section">
+            <h3>Элементы корзины</h3>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Тип товара</th>
+                        <th>Количество</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product_type.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="no-items">Элементы отсутствуют</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="form-links">
+        <a href="{% url 'cart_list_view' %}" class="form-link">← Вернуться к списку</a>
+        <a href="{% url 'admin_panel_view' %}" class="form-link">В админ-панель →</a>
+    </div>
+</div>
+{% endblock %}

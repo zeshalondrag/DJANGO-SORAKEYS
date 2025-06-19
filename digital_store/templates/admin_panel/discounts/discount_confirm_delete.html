@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% block title %}Удалить скидку - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .confirm-container {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+        text-align: center;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .form-header {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .form-header::before, .form-header::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background-color: #e0e0e0;
+        max-width: 100px;
+    }
+    .confirm-message {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .confirm-message strong {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+    .warning-message {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 15px;
+        background-color: #fff3f3;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #e74c3c;
+    }
+    .warning-message strong {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+    .product-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+        text-align: left;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+    .product-list li {
+        padding: 5px 0;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #eee;
+    }
+    .product-list li:last-child {
+        border-bottom: none;
+    }
+    .confirm-form {
+        margin: 20px 0;
+    }
+    .delete-btn {
+        padding: 12px 20px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 200px;
+    }
+    .delete-btn:hover {
+        background-color: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    .delete-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    }
+    .form-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .form-link {
+        color: #4756DD;
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.2s ease;
+    }
+    .form-link:hover {
+        color: #4756DD;
+        text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+        .confirm-container {
+            margin: 20px 10px;
+            padding: 15px;
+        }
+        .form-header {
+            font-size: 24px;
+        }
+        .confirm-message, .warning-message {
+            font-size: 16px;
+        }
+        .product-list li {
+            font-size: 13px;
+        }
+        .delete-btn {
+            width: 100%;
+        }
+        .form-links {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+<div class="confirm-container">
+    <h1 class="form-header">
+        🗑️ Удалить скидку
+    </h1>
+    <p class="confirm-message">Вы уверены, что хотите удалить скидку <strong>"{{ object.name }}"</strong>?</p>
+    {% if object.product_set.exists %}
+    <p class="warning-message">
+        <strong>Внимание:</strong> Эта скидка связана с {{ object.product_set.count }} продуктами. Удаление приведёт к снятию скидки с этих продуктов.
+    </p>
+    <ul class="product-list">
+        {% for product in object.product_set.all %}
+        <li>{{ product.name }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form method="post" class="confirm-form">
+        {% csrf_token %}
+        <button type="submit" class="delete-btn">Удалить</button>
+    </form>
+    <div class="form-links">
+        <a href="{% url 'discount_list_view' %}" class="form-link">← Отмена</a>
+        <a href="{% url 'admin_panel_view' %}" class="form-link">В админ-панель →</a>
+    </div>
+</div>
+{% endblock %}

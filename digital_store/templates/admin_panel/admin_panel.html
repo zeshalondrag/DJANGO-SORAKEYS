@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block title %}Панель администратора - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .admin-panel {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+    .admin-block {
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        padding: 20px;
+        width: 250px;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .admin-block img {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+    }
+    .admin-block h3 {
+        margin: 10px 0;
+        font-size: 20px;
+    }
+    .admin-block a {
+        display: inline-block;
+        background-color: #4756DD;
+ color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    .admin-block a:hover {
+        background-color: #3b4abb;
+    }
+    h1 {
+        text-align: center; 
+    }
+</style>
+<h1>Панель администратора</h1>
+<div class="admin-panel">
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/50/controller.png" alt="Products Icon">
+        <h3>Товары</h3>
+        <a href="{% url 'product_list_view' %}">Перейти к таблице</a>
+    </div>
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/50/folder-invoices.png" alt="Categories Icon">
+        <h3>Категории</h3>
+        <a href="{% url 'category_list_view' %}">Перейти к таблице</a>
+    </div>
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/50/shopping-cart.png" alt="Carts Icon">
+        <h3>Корзина</h3>
+        <a href="{% url 'cart_list_view' %}">Перейти к таблице</a>
+    </div>
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/50/purchase-order.png" alt="Orders Icon">
+        <h3>Заказы</h3>
+        <a href="{% url 'order_list_view' %}">Перейти к таблице</a>
+    </div>
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/50/organization.png" alt="Sellers Icon">
+        <h3>Продавцы</h3>
+        <a href="{% url 'seller_list_view' %}">Перейти к таблице</a>
+    </div>
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/50/console.png" alt="Platforms Icon">
+        <h3>Платформы</h3>
+        <a href="{% url 'platform_list_view' %}">Перейти к таблице</a>
+    </div>
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/50/discount.png" alt="Discounts Icon">
+        <h3>Скидки</h3>
+        <a href="{% url 'discount_list_view' %}">Перейти к таблице</a>
+    </div>
+    <div class="admin-block">
+        <img src="https://img.icons8.com/ios-filled/type.png" alt="Product Types Icon">
+        <h3>Типы товаров</h3>
+        <a href="{% url 'product_type_list_view' %}">Перейти к таблице</a>
+    </div>
+</div>
+{% endblock %}

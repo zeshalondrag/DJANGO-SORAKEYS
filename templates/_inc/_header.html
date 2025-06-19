@@ -1,0 +1,27 @@
+{% load static %}
+<header>
+    <div class="container header-content">
+        <div class="logo">
+            <a href="{% url 'home_view' %}">
+                <img src="{% static 'images/other/logo.png' %}" alt="SORAKEYS Logo">
+            </a>
+        </div>
+        <div class="nav-buttons">
+            <a href="{% url 'catalog_view' %}" class="nav-button">
+                <img src="{% static 'images/icons/catalog.png' %}" alt="Menu Icon"> Каталог
+            </a>
+            <div class="search-bar">
+                <input type="text" placeholder="Поиск по товарам">
+                <img src="{% static 'images/icons/search.png' %}" alt="Search Icon">
+            </div>
+            <a href="{% url 'cart:cart_detail' %}" class="nav-button">
+                <img src="{% static 'images/icons/cart.png' %}" alt="Cart Icon"> Корзина
+            </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout_page' %}" class="login-button">Выйти</a>
+            {% else %}
+                <a href="{% url 'login_page' %}" class="login-button">Войти</a>
+            {% endif %}
+        </div>
+    </div>
+</header>

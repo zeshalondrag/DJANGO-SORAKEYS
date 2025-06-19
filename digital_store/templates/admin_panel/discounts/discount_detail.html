@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% block title %}Скидка: {{ discount.name }} - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .discount-detail-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .form-header {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+    .form-header::before, .form-header::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background-color: #e0e0e0;
+        max-width: 100px;
+    }
+    .discount-detail {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .discount-info {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 15px;
+        font-size: 16px;
+        color: #333;
+    }
+    .discount-info .label {
+        font-weight: bold;
+        color: #555;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .discount-info .value {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .discount-info .value.percentage {
+        color: #2ecc71;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .products-section {
+        margin-top: 20px;
+    }
+    .products-section h2 {
+        font-size: 20px;
+        color: #333;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #4756DD;
+        padding-bottom: 5px;
+        text-align: left;
+    }
+    .products-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+    .products-table th, .products-table td {
+        padding: 12px;
+        text-align: left;
+        font-size: 15px;
+    }
+    .products-table th {
+        background-color: #4756DD;
+        color: white;
+        font-weight: bold;
+    }
+    .products-table td {
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #eee;
+    }
+    .products-table tr:last-child td {
+        border-bottom: none;
+    }
+    .products-table tr:hover td {
+        background-color: #f1f1f1;
+        transition: background-color 0.2s ease;
+    }
+    .no-products {
+        text-align: center;
+        color: #7f8c8d;
+        font-style: italic;
+        padding: 20px;
+    }
+    .form-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .form-link {
+        color: #4756DD;
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.2s ease;
+    }
+    .form-link:hover {
+        color: #4756DD;
+        text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+        .discount-detail-container {
+            margin: 20px 10px;
+            padding: 15px;
+        }
+        .form-header {
+            font-size: 24px;
+        }
+        .discount-info {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+        .discount-info .label, .discount-info .value {
+            padding: 8px 0;
+        }
+        .products-table th, .products-table td {
+            font-size: 14px;
+            padding: 10px;
+        }
+        .products-table {
+            display: block;
+            overflow-x: auto;
+        }
+        .form-links {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+<div class="discount-detail-container">
+    <h1 class="form-header">
+        🎟️ {{ discount.name }}
+    </h1>
+    <div class="discount-detail">
+        <div class="discount-info">
+            <div class="label">Название:</div>
+            <div class="value">{{ discount.name }}</div>
+            <div class="label">Процент скидки:</div>
+            <div class="value percentage">{{ discount.percentage }}%</div>
+            <div class="label">Дата начала:</div>
+            <div class="value">{{ discount.start_date }}</div>
+            <div class="label">Дата окончания:</div>
+            <div class="value">{{ discount.end_date }}</div>
+        </div>
+        <div class="products-section">
+            <h2>Связанные товары</h2>
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="no-products">Товары отсутствуют</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="form-links">
+        <a href="{% url 'discount_list_view' %}" class="form-link">← Просмотреть все скидки</a>
+        <a href="{% url 'admin_panel_view' %}" class="form-link">В админ-панель →</a>
+    </div>
+</div>
+{% endblock %}

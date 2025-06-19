@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Оформление заказа - SORAKEYS{% endblock %}
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    .order-container {
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        font-family: 'Arial', sans-serif;
+    }
+    .order-container h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .order-summary h3, .order-form h3 {
+        color: #2c3e50;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    .order-summary table {
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    .order-summary th, .order-summary td {
+        border: none;
+        padding: 12px;
+        color: #2c3e50;
+        font-weight: bold;
+
+    }
+    .order-summary th {
+        background-color: #e9ecef;
+    }
+    .original-price {
+        color: balck;
+        font-weight: bold;
+    }
+    .discounted-price {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+    .total-savings {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    .order-form .form-group label {
+        color: #2c3e50;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    .order-form .form-control, .order-form .form-select {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 14px;
+    }
+    .order-form .form-check-label {
+        color: #7f8c8d;
+        font-size: 14px;
+    }
+    .btn-primary {
+        background-color: #4756DD;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+        background-color: #3b4abb;
+        transform: translateY(-2px);
+    }
+    .btn-outline-secondary {
+        color: #4756DD;
+        border-color: #4756DD;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #4756DD;
+        color: white;
+    }
+    .alert-info {
+        background-color: #e7f3ff;
+        color: #31708f;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+    @media (max-width: 768px) {
+        .order-container {
+            padding: 15px;
+        }
+        .order-summary, .order-form {
+            margin-bottom: 20px;
+        }
+    }
+</style>
+
+<div class="order-container">
+    <h1>Оформление заказа</h1>
+    <div class="row">
+        <div class="col-md-6 order-summary">
+            <h3>Ваш заказ</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart %}
+                        <tr>
+                            <td>{{ item.product.name }} ({{ item.product_type.name }}) x{{ item.count }}</td>
+                            <td>
+                                <span class="original-price">{{ item.total_original_price|floatformat:2 }} руб.</span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if cart.get_total_original_price > cart.get_total_discounted_price %}
+                        <tr>
+                            <th>Скидка</th>
+                            <td class="total-savings">
+                                {{ cart.get_total_original_price|floatformat:2 }} руб.
+                            </td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <th>Итого:</th>
+                        <th>{{ cart.get_total_discounted_price|floatformat:2 }} руб.</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 order-form">
+            <h3>Данные для заказа</h3>
+            <form method="post" action="{% url 'cart:cart_buy' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group mb-3">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger">{{ field.errors }}</div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary w-100">Подтвердить заказ</button>
+            </form>
+        </div>
+    </div>
+    <a href="{% url 'cart:cart_detail' %}" class="btn btn-outline-secondary mt-3">Вернуться к корзине</a>
+</div>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const agreeTerms = document.querySelector('[name="agree_terms"]');
+        if (!agreeTerms.checked) {
+            e.preventDefault();
+            alert('Пожалуйста, согласитесь с правилами покупки.');
+        }
+    });
+</script>
+{% endblock %}

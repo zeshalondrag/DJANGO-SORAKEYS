@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Авторизация - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .auth-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    .auth-container h1 {
+        font-size: 28px;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .auth-form p {
+        margin: 0;
+        position: relative;
+    }
+    .auth-form input {
+        width: 100%;
+        padding: 12px 40px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border-color 0.2s ease;
+        box-sizing: border-box;
+    }
+    .auth-form input:focus {
+        border-color: #4756DD;
+        outline: none;
+    }
+    .auth-form i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7f8c8d;
+        font-size: 18px;
+    }
+    .auth-form .errorlist {
+        color: #e74c3c;
+        font-size: 12px;
+        margin-top: 5px;
+        list-style: none;
+        padding: 0;
+    }
+    .auth-form button {
+        padding: 12px;
+        background-color: #4756DD;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .auth-links {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .auth-links a {
+        display: inline-block;
+        padding: 10px;
+        color: #4756DD;
+        text-decoration: none;
+        font-size: 14px;
+        border-radius: 6px;
+        transition: color 0.2s ease;
+    }
+    .auth-links a:hover {
+        color: #3b4abb;
+    }
+    .error-message {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 480px) {
+        .auth-container {
+            margin: 20px;
+            padding: 20px;
+        }
+        .auth-container h1 {
+            font-size: 24px;
+        }
+        .auth-form input {
+            padding: 10px 35px;
+            font-size: 14px;
+        }
+        .auth-form button {
+            padding: 10px;
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div class="auth-container">
+    <h1>Авторизация</h1>
+    {% if form.errors %}
+        <div class="error-message">
+            {% for error in form.non_field_errors %}
+                {{ error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>
+                {% if field.name == 'username' %}
+                    <i class="fas fa-user"></i>
+                {% elif field.name == 'password' %}
+                    <i class="fas fa-lock"></i>
+                {% endif %}
+                {{ field }}
+                {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </p>
+        {% endfor %}
+        <button type="submit">Войти</button>
+    </form>
+    <div class="auth-links">
+        <a href="{% url 'registration_page' %}">Нет аккаунта? Зарегистрируйтесь</a>
+        <a href="{% url 'home_view' %}">Назад на главную</a>
+    </div>
+</div>
+{% endblock %}

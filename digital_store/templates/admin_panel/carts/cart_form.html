@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Изменить корзину{% else %}Добавить корзину{% endif %} - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .cart-form-container {
+        max-width: 600px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .form-header {
+        text-align: center;
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .form-header::before, .form-header::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background-color: #e0e0e0;
+        max-width: 100px;
+    }
+    .cart-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .form-group label {
+        font-weight: bold;
+        color: #333;
+        font-size: 16px;
+    }
+    .form-group select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        color: #333;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .form-group select:focus {
+        border-color: #4756DD;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        outline: none;
+    }
+    .form-group.error select {
+        border-color: #e74c3c;
+    }
+    .errorlist {
+        list-style: none;
+        padding: 0;
+        margin: 5px 0 0;
+        color: #e74c3c;
+        font-size: 14px;
+    }
+    .errorlist li {
+        margin-bottom: 5px;
+    }
+    small {
+        color: #7f8c8d;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+    .submit-btn {
+        padding: 12px 20px;
+        background-color: #4756DD;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        align-self: center;
+        width: 200px;
+    }
+    .submit-btn:hover {
+        background-color: #4756DD;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+    .submit-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    }
+    .form-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .form-link {
+        color: #4756DD;
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.2s ease;
+    }
+    .form-link:hover {
+        color: #4756DD;
+        text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+        .cart-form-container {
+            margin: 20px 10px;
+            padding: 15px;
+        }
+        .form-header {
+            font-size: 24px;
+        }
+        .submit-btn {
+            width: 100%;
+        }
+        .form-links {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+<div class="cart-form-container">
+    <h1 class="form-header">
+        {% if form.instance.pk %}
+            ✏️ Изменить корзину
+        {% else %}
+            🆕 Добавить новую корзину
+        {% endif %}
+    </h1>
+    <form method="post" class="cart-form">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group {% if field.errors %}error{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <ul class="errorlist">
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="submit-btn">
+            {% if form.instance.pk %}
+                Обновить корзину
+            {% else %}
+                Создать корзину
+            {% endif %}
+        </button>
+    </form>
+    <div class="form-links">
+        <a href="{% url 'cart_list_view' %}" class="form-link">← К списку корзин</a>
+        <a href="{% url 'admin_panel_view' %}" class="form-link">В админ-панель →</a>
+    </div>
+</div>
+{% endblock %}

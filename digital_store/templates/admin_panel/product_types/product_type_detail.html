@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Тип товара: {{ product_type.name }} - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .product-type-detail-container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .form-header {
+        font-size: 28px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .product-type-info {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 15px;
+        font-size: 16px;
+        color: #333;
+    }
+    .product-type-info .label {
+        font-weight: bold;
+        color: #555;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .product-type-info .value {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+    }
+    .form-links {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .form-link {
+        color: #4756DD;
+        text-decoration: none;
+        font-size: 16px;
+        transition: color 0.2s ease;
+    }
+    .form-link:hover {
+        color: #3b4abb;
+        text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+        .product-type-detail-container {
+            margin: 20px 10px;
+            padding: 15px;
+        }
+        .form-header {
+            font-size: 24px;
+        }
+        .product-type-info {
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+    }
+</style>
+<div class="product-type-detail-container">
+    <h1 class="form-header">Тип товара: {{ product_type.name }}</h1>
+    <div class="product-type-info">
+        <div class="label">ID:</div>
+        <div class="value">{{ product_type.id }}</div>
+        <div class="label">Название:</div>
+        <div class="value">{{ product_type.name }}</div>
+    </div>
+    <div class="form-links">
+        <a href="{% url 'product_type_list_view' %}" class="form-link">← Вернуться к списку</a>
+        <a href="{% url 'product_type_update_view' product_type.pk %}" class="form-link">Изменить</a>
+        <a href="{% url 'product_type_delete_view' product_type.pk %}" class="form-link">Удалить</a>
+    </div>
+</div>
+{% endblock %}

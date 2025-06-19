@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% block title %}О компании - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .about-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .page-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .page-header h1 {
+        font-size: 32px;
+        color: #2c3e50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .page-header h1::before, .page-header h1::after {
+        content: '';
+        flex: 1;
+        height: 2px;
+        background-color: #e0e0e0;
+        max-width: 100px;
+    }
+    .about-content {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+    .section {
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    .section h2 {
+        font-size: 24px;
+        color: #4756DD;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #4756DD;
+        padding-bottom: 5px;
+    }
+    .section p {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+    .advantages {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    .advantage-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 16px;
+        color: #333;
+    }
+    .advantage-item i {
+        color: #4756DD;
+        font-size: 20px;
+        margin-top: 2px;
+    }
+    .cta-button {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #4756DD;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .cta-button:hover {
+        background-color: #4756DD;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .contact-info {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .contact-info p {
+        font-size: 16px;
+        color: #333;
+        margin: 5px 0;
+    }
+    .contact-link {
+        color: #4756DD;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .contact-link:hover {
+        color: #4756DD;
+        text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+        .about-container {
+            margin: 20px 10px;
+            padding: 15px;
+        }
+        .page-header h1 {
+            font-size: 28px;
+        }
+        .section {
+            padding: 15px;
+        }
+        .section h2 {
+            font-size: 20px;
+        }
+        .section p, .advantage-item, .contact-info p {
+            font-size: 14px;
+        }
+        .cta-button {
+            font-size: 14px;
+            padding: 10px 15px;
+        }
+    }
+</style>
+
+<div class="about-container">
+    <div class="page-header">
+        <h1><i class="fas fa-info-circle"></i> О компании</h1>
+    </div>
+    <div class="about-content">
+        <div class="section">
+            <h2>Кто мы</h2>
+            <p>SORAKEYS — это интернет-магазин видеоигр, созданный для геймеров, которые ценят качество, разнообразие и доступные цены. Мы предлагаем широкий ассортимент игр для всех платформ, от новинок AAA до инди-шедевров.</p>
+            <p>Наша цель — сделать игровой мир ближе к каждому, предоставляя удобный сервис, быструю доставку цифровых ключей и профессиональную поддержку.</p>
+        </div>
+        <div class="section">
+            <h2>Наша миссия</h2>
+            <p>Мы стремимся объединить сообщество геймеров, обеспечивая доступ к лучшим играм по выгодным ценам. Наши ценности — это честность, качество и забота о клиентах.</p>
+        </div>
+        <div class="section">
+            <h2>История</h2>
+            <p>SORAKEYS был основан в 2020 году группой энтузиастов, увлечённых видеоиграми. С тех пор мы выросли из небольшого стартапа в надёжного партнёра для тысяч игроков по всей России. Сегодня мы сотрудничаем с ведущими издателями и предлагаем более 5000 игр в каталоге.</p>
+        </div>
+        <div class="section">
+            <h2>Наши преимущества</h2>
+            <div class="advantages">
+                <div class="advantage-item">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Широкий выбор игр для PC, PlayStation, Xbox и Nintendo</span>
+                </div>
+                <div class="advantage-item">
+                    <i class="fas fa-tags"></i>
+                    <span>Регулярные скидки и акции до 70%</span>
+                </div>
+                <div class="advantage-item">
+                    <i class="fas fa-headset"></i>
+                    <span>Круглосуточная поддержка клиентов</span>
+                </div>
+                <div class="advantage-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Гарантия на все цифровые ключи</span>
+                </div>
+            </div>
+        </div>
+        <div class="contact-info">
+            <p>Хотите узнать больше или связаться с нами?</p>
+            <p>Телефон: <a href="tel:+74951234567" class="contact-link">+7 (495) 123-45-67</a></p>
+            <p>Email: <a href="mailto:support@sorakeys.ru" class="contact-link">support@sorakeys.ru</a></p>
+            <a href="{% url 'contacts_view' %}" class="cta-button">Связаться с нами</a>
+            <a href="{% url 'catalog_view' %}" class="cta-button" style="margin-left: 10px;">Перейти в каталог</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

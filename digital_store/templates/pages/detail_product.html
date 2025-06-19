@@ -1,0 +1,443 @@
+{% extends 'base.html' %}
+{% load static discount_tags %}
+{% block title %}{{ product.name }} - SORAKEYS{% endblock %}
+{% block content %}
+<style>
+    .product-detail-container {
+        max-width: 1200px;
+        font-family: 'Arial', sans-serif;
+        display: flex;
+        gap: 30px;
+    }
+    .left-block {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+    .product-image img {
+        height: 300px;
+        border-radius: 8px;
+    }
+    .no-image {
+        width: 100%;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        color: #999;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    .left-block h1 {
+        font-size: 24px;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+    .left-block .info-item {
+        font-size: 14px;
+        color: #7f8c8d;
+        margin-bottom: 5px;
+    }
+    .right-block {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .price-block {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+    }
+    .price-block .price {
+        font-size: 24px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .price.discounted {
+        color: #2ecc71;
+    }
+    .price.original {
+        position: relative;
+        color: #7f8c8d;
+        font-size: 18px;
+    }
+    .price.original::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: #7f8c8d;
+        transform: translateY(-50%);
+    }
+    .original {
+        opacity: .5;
+        text-decoration: line-through;
+    }
+    .discount-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        background-color: #2ecc71;
+        color: white;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .promo-text {
+        font-size: 14px;
+        color: #7f8c8d;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+    .add-to-cart-button {
+        display: block;
+        padding: 12px 0px;
+        background-color: #4756DD;
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 16px;
+        margin-bottom: 10px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+    .add-to-cart-button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    .choice-type-product {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: border-color 0.2 ease;
+        margin-bottom: 10px;
+    }
+    .agreement-text {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-bottom: 15px;
+    }
+    .agreement-text a {
+        color: #4756DD;
+        text-decoration: none;
+    }
+    .payment-icons {
+        display: flex;
+        gap: 10px;
+    }
+    .payment-icons img {
+        height: 30px;
+        object-fit: contain;
+    }
+    .guarantee-block {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 15px;
+        justify-content: center;
+        align-item: center;
+        display: flex;
+        gap: 10px;
+    }
+    .guarantee-item {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #333;
+    }
+    .guarantee-item i {
+        font-size: 18px;
+    }
+    .seller-block {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .seller-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .seller-info i {
+        color: #4756DD;
+        font-size: 18px;
+    }
+    .seller-info span {
+        font-size: 14px;
+        color: #333;
+    }
+    .contact-seller-button {
+        padding: 8px 15px;
+        background-color: #4756DD;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+    .description-block {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .description-block h2 {
+        font-size: 20px;
+        color: #2c3e50;
+    }
+    .description-block p {
+        font-size: 14px;
+        color: #333;
+    }
+    .description-block .info-item {
+        font-size: 14px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    .description-block .info-item span {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    .types .type-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background-color: #e8f4fc;
+        color: #4756DD;
+        border-radius: 10px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    @media (max-width: 768px) {
+        .product-detail-container {
+            flex-direction: column;
+            padding: 15px;
+        }
+        .left-block {
+            max-width: 100%;
+        }
+        .left-block h1 {
+            font-size: 20px;
+        }
+        .price-block .price {
+            font-size: 20px;
+        }
+        .price.original {
+            font-size: 16px;
+        }
+        .seller-block {
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .contact-seller-button {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="product-detail-container">
+    <div class="left-block">
+        <div class="product-image">
+            {% if product.photo %}
+                <img src="{{ product.photo.url }}" alt="{{ product.name }} poster">
+            {% else %}
+                <div class="no-image">Нет фото</div>
+            {% endif %}
+        </div>
+        <h1>{{ product.name }}</h1>
+        <div class="info-item">Продано: {{ product.sales_count }} шт.</div>
+        <div class="info-item">Отзывы: {{ product.reviews.count|default:0 }}</div>
+    </div>
+    <div class="right-block">
+        <div class="price-block">
+            <div class="price">
+                {% with price_data=product|calculate_discounted_price %}
+                    {% if price_data.1 > 0 %}
+                        <span class="discounted">{{ price_data.0 }} руб.</span>
+                        <span class="original">{{ product.price }} руб.</span>
+                        <span class="discount-badge">-{{ price_data.1 }}%</span>
+                    {% else %}
+                        {{ product.price }} руб.
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="promo-text">Есть промокод?</div>
+            {% if product.stock > 0 %}
+                <form method="post" action="{% url 'cart:cart_add' product.id %}" class="add-to-cart-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="count" value="1">
+                    <input type="hidden" name="reload" value="0">
+                    <select name="product_type" required>
+                        <option value="">Выберите тип продукта</option>
+                        {% for product_type in product.product_types.all %}
+                            <option value="{{ product_type.id }}">{{ product_type.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="add-to-cart-button">Добавить в корзину</button>
+                </form>
+            {% else %}
+                <button class="add-to-cart-button" disabled>Нет в наличии</button>
+            {% endif %}
+            <div class="agreement-text">
+                Нажимая на кнопку, вы соглашаетесь с <a href="#">правилами покупки</a>
+            </div>
+            <div class="payment-icons">
+                <img src="{% static 'images/payment/visa.png' %}" alt="Visa">
+                <img src="{% static 'images/payment/mastercard.png' %}" alt="MasterCard">
+                <img src="{% static 'images/payment/mir.png' %}" alt="Mir">
+            </div>
+        </div>
+
+        <style>
+            .price-block form {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 10px;
+            }
+            .price-block select {
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                font-size: 14px;
+            }
+            #notification {
+                position: fixed;
+                bottom: 200px;
+                left: 50%;
+                transform: translateX(-50%) translateY(20px); /* Начальное смещение вниз */
+                padding: 15px 30px;
+                color: white;
+                border-radius: 6px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                font-size: 16px;
+                font-family: 'Arial', sans-serif;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+                z-index: 1000;
+            }
+            #notification.visible {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0); /* Поднимается на место */
+                visibility: visible;
+            }
+            #notification.success {
+                background-color: rgba(46, 204, 113, 0.7); /* #2ecc71 с прозрачностью 50% */
+            }
+            #notification.error {
+                background-color: rgba(231, 76, 60, 0.7); /* #e74c3c с прозрачностью 50% */
+            }
+        </style>
+
+        <script>
+            document.querySelectorAll('.add-to-cart-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    let notification = document.getElementById('notification');
+                    if (!notification) {
+                        notification = document.createElement('div');
+                        notification.id = 'notification';
+                        document.body.appendChild(notification);
+                    }
+
+                    fetch(this.action, {
+                        method: 'POST',
+                        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                        body: new FormData(this)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        notification.textContent = data.message;
+                        notification.classList.remove('success', 'error', 'visible');
+                        notification.classList.add(data.success ? 'success' : 'error');
+                        setTimeout(() => notification.classList.add('visible'), 10); 
+                        setTimeout(() => {
+                            notification.classList.remove('visible');
+                        }, 2000);
+                    })
+                    .catch(error => {
+                        notification.textContent = 'Ошибка при добавлении товара';
+                        notification.classList.remove('success', 'visible');
+                        notification.classList.add('error');
+                        setTimeout(() => notification.classList.add('visible'), 10);
+                        setTimeout(() => notification.classList.remove('visible'), 2000);
+                    });
+                });
+            });
+        </script>
+        <div class="guarantee-block">
+            <div class="guarantee-item">
+                <i class="fas fa-check-circle"></i>
+                Безопасная сделка
+            </div>
+            <div class="guarantee-item">
+                <i class="fas fa-stopwatch"></i>
+                Доставка за 1 час
+            </div>
+        </div>
+        <div class="seller-block">
+            <div class="seller-info">
+                <i class="fas fa-store"></i>
+                <span>{{ product.seller.name|default:"SORAKEYS" }}</span>
+            </div>
+            <a href="#" class="contact-seller-button">Написать продавцу</a>
+        </div>
+    </div>
+</div>
+<div class="description-block">
+    <h2>Описание товара</h2>
+    <p>{{ product.description|default:"Нет описания" }}</p>
+    <div class="info-item">
+        <span>Категории:</span>
+        {% for category in product.categories.all %}
+            {{ category.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Без категории
+        {% endfor %}
+    </div>
+    <div class="info-item">
+        <span>Платформы:</span>
+        {% for platform in product.platforms.all %}
+            {{ platform.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Без платформы
+        {% endfor %}
+    </div>
+    <div class="info-item">
+        <span>Тип продукта:</span>
+        {% for product_type in product.product_types.all %}
+            {{ product_type.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Без типа
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
